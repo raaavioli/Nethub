@@ -1,0 +1,36 @@
+CREATE OR REPLACE FUNCTION check_completed() RETURNS TRIGGER AS
+$$
+BEGIN
+	INSERT INTO completed_season (series_ID, season_ID, user_ID) 	
+	SELECT watchedcount.sid AS series, watchedcount.season AS season, uid AS user
+	FROM
+		(
+			SELECT	watched.user_ID AS uid,
+				COUNT(watched.movie_ID),
+				movie_in.season AS season,
+				movie_in.series_ID AS sid
+			FROM watched
+			JOIN movie_in
+			ON movie_in.movie_ID = watched.movie_ID
+			GROUP BY watched.user_ID, movie_in.season, movie_in.series_ID
+		) AS watchedcount
+	JOIN
+		(
+			SELECT	series_ID AS sid,
+				season,
+				count(movie_ID)
+			FROM movie_in
+			GROUP BY season, series_ID
+		) AS episodecount
+	ON watchedcount.sid = episodecount.sid AND watchedcount.season = episodecount.season
+	WHERE 	watchedcount.count = episodecount.count
+		AND (watchedcount.sid, watchedcount.season, uid) NOT IN
+			(SELECT * FROM completed_season);  
+	RETURN NULL;
+
+END
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER completed_watching
+	AFTER INSERT ON watched
+	EXECUTE PROCEDURE check_completed();

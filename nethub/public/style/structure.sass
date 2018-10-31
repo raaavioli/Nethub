@@ -1,0 +1,122 @@
+@at-root body
+  background: #ddd
+  margin: 0px
+  overflow: hidden
+  font-family: 'Fira Sans', sans-serif
+.sidebar
+  position: fixed
+  width: 350px
+  background: #eee
+  height: 100%
+  .userselect
+    display: flex
+    h1
+      margin-left: 30px
+      margin-right: 30px
+    select
+      align-self: center
+      height: 30px
+
+  .filterwrapper
+
+    h2
+    .wrapper
+      padding: 10px 20px
+      display: flex
+      flex-direction: row
+      flex-wrap: wrap
+      &:nth-child(2n+1)
+        background: #fefefe
+      &:nth-child(2n)
+        background: #dedede
+      h3
+        height: 30px
+      .filtercontent
+        display: flex
+        flex-wrap: wrap
+        .filter
+          display: flex
+          margin: 10px
+          h4
+            margin: 0px
+            padding: 0px
+            display: inline-block
+      select
+        height: 30px
+        align-self: center
+.maincontent
+  position: relative
+  background: #dedede
+  display: flex
+  flex-direction: column
+  float: right
+  width: calc(100% - 350px)
+  .menu
+    float: left
+    position: relative
+    width: 100%
+    background: #fefefe
+    padding-top: 10px
+    div
+      z-index: 2
+      background: #dedede
+      position: relative
+      float: left
+      border-radius: 10px 10px 0 0
+      border-left: 2px solid gray
+      border-top: 2px solid gray
+      border-right: 2px solid gray
+      margin: 0px 15px
+      width: 150px
+      padding-bottom: 6px
+      padding-top: 6px
+      &.notselected
+        background: #ccc
+      h4
+        margin: 0px
+        text-align: center
+        font-size: 30px
+        height: 40px
+
+  .bodycontentwrapper
+    position: relative
+    width: 100%
+    background: #dedede
+    div
+      &.watched, &.searched
+        position: absolute
+        width: 100%
+        height: 100%
+      &.searched
+        visibility: hidden
+      &.watched
+        .movie
+          .movierate
+            div
+              cursor: pointer
+      .movie
+        text-align: center
+        margin: 15px
+        width: 200px
+        background: #ccc
+        position: relative
+        display: inline-block
+        border: 1px solid black
+        h4
+          padding: 10px
+          margin: 0px
+        .movierate
+          border: 1px solid black
+          width: 150px
+          margin-left: 25px
+          div
+            background: black
+            border-radius: 10px
+            border: 2px solid black
+            background: #dedede
+            width: 16px
+            height: 16px
+            margin: 5px
+            float: left
+            &.selected
+              background: yellow

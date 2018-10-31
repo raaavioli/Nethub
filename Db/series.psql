@@ -1,0 +1,126 @@
+INSERT INTO series (name) VALUES
+	('Game Of Thrones'),
+	('Friends');
+
+INSERT INTO seasons (number, series_ID) VALUES
+	(1,1),
+	(2,1),
+	(1,2);
+
+INSERT INTO movies (name, recommended_age, release_date) VALUES
+	('Winter Is Coming',18,'2011-05-04'),
+	('The Kingsroad',18,'2011-05-11'),
+        ('Lord Snow',18,'2011-05-01'),
+        ('Cripples, Bastards, and Broken Things',18,'2011-05-08'),
+        ('The North Remembers',18,'2012-04-01'),
+        ('The Night Lands',18,'2012-04-08'),
+        ('What Is Dead May Never Die',13,'2012-04-15'),
+        ('The One Where Monica Gets a Roommate',13,'1994-09-11'),
+	('The One with the Sonogram at the End',13,'1994-09-29'),
+        ('The One with the Thumb',13,'1994-10-06'),
+        ('The One with George Stephanopoulos',13,'1994-10-13'),
+        ('The One with the East German Laundry Detergent',13,'1994-10-20');
+
+INSERT INTO movie_in VALUES
+	(1,1,1),
+	(2,1,1),
+	(3,1,1),
+        (4,1,1),
+        (5,2,1),
+        (6,2,1),
+        (7,2,1),
+        (8,1,2),
+        (9,1,2),
+        (10,1,2),
+        (11,1,2),
+        (12,1,2);
+
+INSERT INTO languages (language) VALUES
+	('English'),
+	('Swedish'),
+	('German');
+
+INSERT INTO genres (name) VALUES
+	('Action'),
+	('Drama'),
+	('Thriller'),
+	('Fantasy'),
+	('Crime'),
+	('Comedy'),
+	('Romance'),
+	('Historical'),
+	('Adventure');
+
+INSERT INTO actors (name) VALUES
+	('Kit Harington'),
+	('Emilia Clarke'),
+	('Peter Dinklage'),
+	('Sophie Turner'),
+	('Maisie Williams'),
+	('Lena Headey'),
+	('Courteney Cox'),
+	('Matthew Perry'),
+	('Jennifer Aniston'),
+	('Lisa Kudrow'),
+	('Matt LeBlanc'),
+	('David Schwimmer');
+
+INSERT INTO directors (name) VALUES
+	('Tim Van Patten'),
+	('Brian Kirk'),
+	('Alan Taylor'),
+	('Alik Sakharov'),
+	('James Burrows'),
+	('Pamela Fryman');
+
+INSERT INTO directs VALUES 
+	(1,1),
+	(1,2),
+	(2,3),
+	(2,4),
+	(3,5),
+	(3,6),
+	(4,7),
+	(5,8),
+	(5,9),
+	(5,10),
+	(5,11),
+	(6,12);
+
+DO $$ 
+BEGIN
+	FOR i IN 1..12 LOOP	
+		INSERT INTO language_in VALUES 
+			(i, 1, 'spoken'),
+			(i, 1, 'subtitle');		
+
+		IF i < 8 THEN		
+			FOR a IN 1..6 LOOP
+				INSERT INTO stars_in VALUES (a, i, 'Character');
+			END LOOP; 
+			INSERT INTO language_in VALUES 
+				(i, 2, 'subtitle'),
+				(i, 3, 'subtitle');
+			INSERT INTO genre_of VALUES
+                                (1, i),
+                                (9, i),
+                                (2, i);
+		END IF;
+	
+		IF 8 <= i AND i <= 12 THEN
+			INSERT INTO language_in VALUES(i, 3, 'spoken');
+			INSERT INTO genre_of VALUES
+				(7, i),
+				(6, i);	
+			FOR a IN 7..12 LOOP
+                                INSERT INTO stars_in VALUES (a, i, 'Character');
+                        END LOOP;
+		END IF;
+	END LOOP;
+END
+$$;
+
+
+
+
+

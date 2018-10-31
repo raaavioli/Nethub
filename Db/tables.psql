@@ -1,0 +1,155 @@
+CREATE TABLE users (
+	ID		SERIAL UNIQUE,
+	name 		varchar(70),
+	age 		integer, 
+	parent		boolean,
+	signed_up 	date,
+	sub_expiry_date	date,
+	payment_status	varchar,
+	PRIMARY KEY (name)
+);
+
+CREATE TABLE child_of (
+	parent 		integer REFERENCES users(ID),
+	child		integer REFERENCES users(ID),
+	PRIMARY KEY (child)
+);
+
+/* To be fixed. Cannot come up with a good way to solve this
+CREATE TABLE cannot_watch (
+	child		integer REFERENCES child_of,
+	movies		integer[] ELEMENT REFERENCES movies (id)	
+);
+*/
+
+CREATE TABLE movies (
+	ID		SERIAL UNIQUE,
+	name		varchar(50) NOT NULL,
+	recommended_age	integer,
+	release_date	date NOT NULL,
+	PRIMARY KEY(name, release_date)
+);
+
+CREATE TABLE genres ( 
+	ID		SERIAL UNIQUE,
+	name		varchar(30),
+	PRIMARY KEY(name)	
+);
+
+CREATE TABLE genre_of (
+	genre_ID	integer REFERENCES genres(ID),
+	movie_ID	integer REFERENCES movies(ID)
+);
+
+CREATE TABLE languages (
+	ID		SERIAL UNIQUE,
+	language	varchar(20),
+	PRIMARY KEY(language)
+);
+
+CREATE TABLE language_in (
+	movie_ID	integer REFERENCES movies(ID),
+	language_ID	integer REFERENCES languages(ID),
+	type		varchar(10) CHECK(type LIKE 'spoken' OR type LIKE 'subtitle'),
+	PRIMARY KEY(movie_ID, language_ID, type)
+);
+
+CREATE TABLE directors ( 
+	ID		SERIAL UNIQUE,
+	name	 	varchar(70) NOT NULL,
+	PRIMARY KEY(name)
+);
+
+CREATE TABLE directs (
+	director_ID	integer REFERENCES directors(ID),
+	movie_ID	integer REFERENCES movies(ID)
+);
+
+CREATE TABLE prod_companies (
+	ID		SERIAL UNIQUE,
+	name		varchar(70) NOT NULL,
+	PRIMARY KEY(name)	
+);
+
+CREATE TABLE produces (
+        producer_ID	integer REFERENCES prod_companies(ID),
+        movie_ID 	integer REFERENCES movies(ID)
+);
+
+CREATE TABLE actors ( 
+	ID		SERIAL UNIQUE,
+	name		varchar(70) NOT NULL,
+	PRIMARY KEY(name)
+);
+
+CREATE TABLE stars_in (
+	actor_ID	integer REFERENCES actors(ID),
+        movie_ID	integer REFERENCES movies(ID),
+        roll		varchar(30)
+);
+
+CREATE TABLE watched (
+	user_ID		integer REFERENCES users(ID),
+	movie_ID	integer REFERENCES movies(ID),
+	PRIMARY KEY(user_ID, movie_ID),
+	date		date NOT NULL,
+	rating		integer CHECK (rating > 0 AND rating <= 5) 
+);
+
+CREATE TABLE series (
+	ID		SERIAL UNIQUE,
+	name		varchar(50) NOT NULL,
+	PRIMARY KEY(name)
+);		
+
+CREATE TABLE seasons ( 
+	ID		SERIAL UNIQUE,
+	number		integer,
+	series_ID	integer,
+	PRIMARY KEY(number, series_ID)
+);
+
+CREATE TABLE completed_season (
+	series_ID	integer REFERENCES series(ID), 
+	season_ID	integer REFERENCES seasons (ID),
+	user_ID		integer REFERENCES users(ID)		
+);
+
+CREATE TABLE movie_in (
+	movie_ID	integer REFERENCES movies(ID) PRIMARY KEY,
+	season		integer,
+	series_ID	integer,
+	FOREIGN KEY(season, series_ID) REFERENCES seasons (number, series_ID) 
+);
+
+CREATE TABLE subscribes_to ( 
+	user_ID		integer REFERENCES users(ID),
+	series_ID	integer REFERENCES series(ID),
+	newContentFlag	boolean,
+	PRIMARY KEY(user_ID, series_ID)	
+);
+
+/*CREATE OR REPLACE FUNCTION notice_subscriber()
+RETURNS TRIGGER AS
+$$
+	BEGIN
+		INSERT INTO 
+	END
+$$
+
+CREATE TRIGGER sub_notice 
+	AFTER INSERT 
+	ON movie_in
+	EXECUTE PROCEDURE notice_subscriber();
+
+*/
+
+
+
+
+
+
+
+
+
+

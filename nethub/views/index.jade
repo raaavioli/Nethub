@@ -1,0 +1,64 @@
+extends layout
+
+block content
+  .sidebar
+    .userselect
+      h1 User:
+      select
+        option() #{'default'}
+        each user in users
+          option() #{user.name}
+        
+    - var categories = ['Languages', 'Genre', 'Subtitles', 'Actors', 'Directors', 'MovieType', 'Rating'];
+    .filterwrapper
+      h2 Filter
+      for category in categories
+        .wrapper
+          h3=category+":"
+          .filtercontent(id=category+"_id")
+          select
+            option() #{'default'}
+            if category == 'MovieType'
+              option() #{'Movie'}
+              option() #{'Series'}
+            else if category == 'Languages'
+              if languages != null
+                each language in languages
+                  option() #{language.language} 
+            else if category == 'Genre'
+              if languages != null
+                each genre in genres
+                  option() #{genre.name}
+            else if category == 'Subtitles'
+              if subtitles != null
+                each subtitle in subtitles
+                  option() #{subtitle.language}
+            else if category == 'Actors'
+              if actors != null
+                each actor in actors
+                  option() #{actor.name}
+            else if category == 'Directors'
+              if directors != null
+                each director in directors
+                  option() #{director.name}
+            else if category == 'Rating'
+              each rate in [1,2,3,4,5]
+                option() #{rate}
+             
+              
+  .maincontent
+    .menu
+      div
+        h4 Watched
+      div.notselected
+        h4 Search
+    .bodycontentwrapper
+      .watched
+      .searched
+      
+        
+        
+        
+        
+        
+      
