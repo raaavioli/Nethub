@@ -99,15 +99,44 @@ function loadWatchedData(){
 
 function appendMovieDiv(data, parent) {
   for (var i = 0; i < data.length; i++) {
-    parent.append("\
+    var moviehtml = "\
     <div class='movie'>\
-      <h4>"+data[i].moviename+"</h4> \
+      <h4 class='moviename'>"+data[i].moviename+"</h4> \
       <div class='movierate'>\
         "+getDivStringFromRating(data[i].rating)+"\
-      </div>\
-    </div>"
-    );
+      </div>"
+    if(parent.hasClass("searched")){
+      moviehtml += "\
+      <div class=\"hovercover\">\
+        <h4>Watch movie</h4>\
+      </div>"
+    }
+    moviehtml+="</div>"
+    parent.append(moviehtml);
   }
+
+  setWatchMovieEvent()
+}
+
+function setWatchMovieEvent() {
+  $(".hovercover").on('click', function() {
+    var moviename = $(this).parent().find('.moviename').text()
+    $.ajax({
+      url: "/watchMovie",
+      type: "post",
+      data: { movie: moviename }
+      }).done(function( data ){
+        if(data != 'default'){
+          /*$(".watched").empty()
+          appendMovieDiv(data, $(".watched"));
+          setRatingHover();
+          updateDbRating();*/
+        }else{
+          $(".watched").empty()
+        }
+      }
+    )
+  })
 }
 
 function setRatingHover(){

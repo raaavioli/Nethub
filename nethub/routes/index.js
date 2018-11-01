@@ -4,7 +4,7 @@ const { Pool } = require('pg');
 var router = express.Router();
 
 const pool = new Pool({
-  user: 'postgres',
+  user: 'josefinengner',
   host: 'localhost',
   database: 'postgres',
   password: 'password',

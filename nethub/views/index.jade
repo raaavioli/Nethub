@@ -8,7 +8,7 @@ block content
         option() #{'default'}
         each user in users
           option() #{user.name}
-        
+
     - var categories = ['Languages', 'Genre', 'Subtitles', 'Actors', 'Directors', 'MovieType', 'Rating'];
     .filterwrapper
       h2 Filter
@@ -24,7 +24,7 @@ block content
             else if category == 'Languages'
               if languages != null
                 each language in languages
-                  option() #{language.language} 
+                  option() #{language.language}
             else if category == 'Genre'
               if languages != null
                 each genre in genres
@@ -44,8 +44,8 @@ block content
             else if category == 'Rating'
               each rate in [1,2,3,4,5]
                 option() #{rate}
-             
-              
+
+
   .maincontent
     .menu
       div
@@ -55,10 +55,3 @@ block content
     .bodycontentwrapper
       .watched
       .searched
-      
-        
-        
-        
-        
-        
-      
