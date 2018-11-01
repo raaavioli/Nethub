@@ -101,6 +101,9 @@ body {
       .maincontent .bodycontentwrapper div .movie h4 {
         padding: 10px;
         margin: 0px; }
+      .maincontent .bodycontentwrapper div .movie h5 {
+        padding: 5px;
+        margin: 0px; }
       .maincontent .bodycontentwrapper div .movie .hovercover {
         opacity: 0;
         position: absolute;

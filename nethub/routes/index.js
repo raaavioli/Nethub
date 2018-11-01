@@ -46,7 +46,8 @@ router.post('/watched', function(req, res){
 
   var watchquery = "SELECT users.name AS username, \
   movies.name AS moviename, \
-  watched.rating \
+  watched.rating, \
+  to_char(watched.date, 'YYYY-MM-DD') AS date \
   FROM watched \
   JOIN movies ON movies.ID = watched.movie_ID \
   JOIN users ON users.ID = watched.user_ID \
@@ -92,8 +93,9 @@ router.post("/updaterating", function(req, res){
 router.post("/searched", function(req, res) {
   var filtervalues = JSON.parse(req.body.filters)
   var query = "\
-  SELECT name AS moviename, round(avg(rating)) AS rating FROM movies \
-  JOIN watched ON movies.id = watched.movie_id \
+  SELECT name AS moviename, \
+  CASE WHEN round(avg(rating)) IS NULL THEN 0 ELSE round(avg(rating)) END AS rating \
+  FROM movies LEFT JOIN watched ON movies.id = watched.movie_id \
   WHERE id IN (";
   var count = 0;
 
@@ -164,8 +166,10 @@ router.post("/searched", function(req, res) {
   query += ")"
 
   if( count == 0){
-    query = "SELECT name AS moviename, round(avg(rating)) AS rating FROM movies \
-    JOIN watched ON movies.id = watched.movie_id WHERE movies.id NOT IN \
+    query = "SELECT name AS moviename, \
+    CASE WHEN round(avg(rating)) IS NULL THEN 0 ELSE round(avg(rating)) END AS rating \
+    FROM movies LEFT JOIN watched \
+    ON movies.id = watched.movie_id WHERE movies.id NOT IN \
       (SELECT movie_id FROM watched WHERE user_id = \
         (SELECT id FROM users WHERE name = '"+req.body.user+"')) "
   }else{
@@ -182,6 +186,7 @@ function poolquery(query, res) {
     if (err) {
       console.log(err.stack)
     } else {
+      console.log(result.rows)
       res.send(result.rows);
     }
   })

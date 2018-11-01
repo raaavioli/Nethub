@@ -1,0 +1,20 @@
+INSERT INTO movies (name, recommended_age, release_date) VALUES
+	('The One with the Butt', 13, CURRENT_DATE);
+
+INSERT INTO movie_in VALUES (13, 1, 2);
+
+UPDATE users SET last_logged_in = (CURRENT_DATE - INTERVAL '1 DAY');
+
+SELECT user_id, series_id, mov_id, release, last_logged_in  
+FROM subscribes_to
+JOIN users
+ON subscribes_to.user_id = users.id
+JOIN 
+	(SELECT movies.id AS mov_id, movies.release_date AS release, movie_in.series_id AS ser_id
+	FROM movies
+	JOIN movie_in 
+	ON movie_in.movie_id = movies.id
+	) AS movser
+ON movser.ser_id = subscribes_to.series_id 
+WHERE release >= last_logged_in;
+

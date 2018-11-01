@@ -16,12 +16,10 @@ CREATE TABLE child_of (
 	PRIMARY KEY (child)
 );
 
-/* To be fixed. Cannot come up with a good way to solve this
 CREATE TABLE cannot_watch (
 	child		integer REFERENCES child_of,
-	movies		integer[] ELEMENT REFERENCES movies (id)	
+	movies		integer REFERENCES movies(id)	
 );
-*/
 
 CREATE TABLE movies (
 	ID		SERIAL UNIQUE,
@@ -126,24 +124,9 @@ CREATE TABLE movie_in (
 CREATE TABLE subscribes_to ( 
 	user_ID		integer REFERENCES users(ID),
 	series_ID	integer REFERENCES series(ID),
-	newContentFlag	boolean,
 	PRIMARY KEY(user_ID, series_ID)	
 );
 
-/*CREATE OR REPLACE FUNCTION notice_subscriber()
-RETURNS TRIGGER AS
-$$
-	BEGIN
-		INSERT INTO 
-	END
-$$
-
-CREATE TRIGGER sub_notice 
-	AFTER INSERT 
-	ON movie_in
-	EXECUTE PROCEDURE notice_subscriber();
-
-*/
 
 
 

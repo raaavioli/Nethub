@@ -109,8 +109,11 @@ function appendMovieDiv(data, parent) {
   for (var i = 0; i < data.length; i++) {
     var moviehtml = "\
     <div class='movie'>\
-      <h4 class='moviename'>"+data[i].moviename+"</h4> \
-      <div class='movierate'>\
+      <h4 class='moviename'>"+data[i].moviename+"</h4>"
+    if(parent.hasClass("watched")){
+      moviehtml += "<h5>"+data[i].date+"</h5>"
+    }
+    moviehtml += "<div class='movierate'>\
         "+getDivStringFromRating(data[i].rating)+"\
       </div>"
     if(parent.hasClass("searched")){
