@@ -45,6 +45,7 @@ function onUserChange(){
   $(".userselect select").change(function() {
     loadWatchedData()
     loadSearchData()
+    loginUser()
   });
 }
 
@@ -58,7 +59,6 @@ function loadSearchData() {
   filtervalues.movietype = getTextFromTags($("#MovieType_id").find("h4"))
   filtervalues.rating = getTextFromTags($("#Rating_id").find("h4"))
 
-  console.log(filtervalues)
   $.ajax({
     url: "/searched",
     type: "post",
@@ -97,6 +97,14 @@ function loadWatchedData(){
   );
 }
 
+function loginUser() {
+  $.ajax({
+    url: "/login",
+    type: "post",
+    data: { user: getSelectedUser() }
+  })
+}
+
 function appendMovieDiv(data, parent) {
   for (var i = 0; i < data.length; i++) {
     var moviehtml = "\
@@ -124,16 +132,10 @@ function setWatchMovieEvent() {
     $.ajax({
       url: "/watchMovie",
       type: "post",
-      data: { movie: moviename }
+      data: { movie: moviename, user: getSelectedUser() }
       }).done(function( data ){
-        if(data != 'default'){
-          /*$(".watched").empty()
-          appendMovieDiv(data, $(".watched"));
-          setRatingHover();
-          updateDbRating();*/
-        }else{
-          $(".watched").empty()
-        }
+        loadWatchedData()
+        loadSearchData()
       }
     )
   })

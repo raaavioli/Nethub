@@ -1,10 +1,10 @@
-INSERT INTO users (name, age, parent, signed_up, sub_expiry_date, payment_status) VALUES
-	('Oliver Eriksson', 22, true, '2018-04-12', '2018-11-19', 'complete'),
-        ('Viktor Edstrom', 20, false, '2018-10-19', '2018-11-19', 'complete'),
-        ('Paul Vinell', 20, false, '2018-10-19', '2018-11-19', 'complete'),
-        ('Filip Back', 23, false, '2018-10-19', '2018-11-19', 'complete'),
-        ('Eldar Zeynalli', 19, false, '2018-10-19', '2018-11-19', 'complete'),
-        ('Josefin Engner', 21, false, '2018-10-19', '2018-11-19', 'complete');
+INSERT INTO users (name, age, parent, signed_up, last_logged_in, sub_expiry_date, payment_status) VALUES
+	('Oliver Eriksson', 22, true, '2018-04-12', '2018-04-12', '2018-11-19', 'complete'),
+        ('Viktor Edstrom', 20, false, '2018-10-19', '2018-10-19', '2018-11-19', 'complete'),
+        ('Paul Vinell', 20, false, '2018-10-19', '2018-10-19', '2018-11-19', 'complete'),
+        ('Filip Back', 23, false, '2018-10-19', '2018-10-19', '2018-11-19', 'complete'),
+        ('Eldar Zeynalli', 19, false, '2018-10-19', '2018-10-19', '2018-11-19', 'complete'),
+        ('Josefin Engner', 21, false, '2018-10-19', '2018-10-19', '2018-11-19', 'complete');
 
 INSERT INTO child_of (parent, child) VALUES
 	(1,4),

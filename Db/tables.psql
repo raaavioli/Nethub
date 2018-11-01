@@ -4,6 +4,7 @@ CREATE TABLE users (
 	age 		integer, 
 	parent		boolean,
 	signed_up 	date,
+	last_logged_in	date,
 	sub_expiry_date	date,
 	payment_status	varchar,
 	PRIMARY KEY (name)

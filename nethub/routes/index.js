@@ -4,7 +4,7 @@ const { Pool } = require('pg');
 var router = express.Router();
 
 const pool = new Pool({
-  user: 'josefinengner',
+  user: 'postgres',
   host: 'localhost',
   database: 'postgres',
   password: 'password',
@@ -56,19 +56,29 @@ router.post('/watched', function(req, res){
     console.log("User cannot be \"Default\"")
     res.send(req.body.user);
   }else{
-    pool.query(watchquery, (err, result) => {
-      if (err) {
-        console.log(err.stack)
-      } else {
-        console.log("Query successful")
-        res.send(result.rows);
-      }
-    })
+    poolquery(watchquery,res)
   }
 });
 
+router.post("/watchMovie", function(req, res) {
+  var query = "INSERT INTO watched SELECT \
+  (SELECT id FROM users WHERE name = '"+req.body.user+"') AS user_id, \
+  (SELECT id FROM movies WHERE name = '"+req.body.movie+"') AS movie_id, \
+  CURRENT_DATE, \
+  5 AS rating"
+
+  poolquery(query,res)
+});
+
+router.post("/login", function(req, res) {
+  var query = "UPDATE users \
+  SET last_logged_in = CURRENT_DATE \
+  WHERE name = '"+req.body.user+"'"
+
+  poolquery(query,res)
+})
+
 router.post("/updaterating", function(req, res){
-  console.log(req.body.movie + ", " + req.body.rating+ ", "+ req.body.user);
   var updatequery = "UPDATE watched \
   SET rating = "+req.body.rating+" \
   WHERE movie_id = \
@@ -76,14 +86,7 @@ router.post("/updaterating", function(req, res){
   AND user_id = \
     (SELECT id FROM users WHERE name = '"+req.body.user+"')";
 
-  pool.query(updatequery, (err, result) => {
-    if (err) {
-      console.log(err.stack)
-    } else {
-      console.log("Query successful")
-      res.send(result.rows);
-    }
-  })
+  poolquery(updatequery,res)
 });
 
 router.post("/searched", function(req, res) {
@@ -170,20 +173,19 @@ router.post("/searched", function(req, res) {
       (SELECT id FROM users WHERE name = '"+req.body.user+"')) "
   }
 
-
-
   query += "GROUP BY movies.name";
+  poolquery(query,res)
+});
 
-  console.log(query)
+function poolquery(query, res) {
   pool.query(query, (err, result) => {
     if (err) {
       console.log(err.stack)
     } else {
-      console.log("Query successful")
       res.send(result.rows);
     }
   })
-});
+}
 
 function getArrayAsSQLString(array){
   var arrayString = "(";
