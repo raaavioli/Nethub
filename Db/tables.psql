@@ -18,7 +18,8 @@ CREATE TABLE child_of (
 
 CREATE TABLE cannot_watch (
 	child		integer REFERENCES child_of,
-	movies		integer REFERENCES movies(id)	
+	movie		integer REFERENCES movies(id),
+	PRIMARY KEY (child, movie)	
 );
 
 CREATE TABLE movies (
