@@ -1,0 +1,17 @@
+INSERT INTO cannot_watch 
+(SELECT	child.id, mov.movie 
+FROM 	(SELECT child AS id FROM child_of 
+	WHERE parent = 
+		(SELECT id FROM users 
+		WHERE name = 'Oliver Eriksson' 
+		AND parent = true)) AS child,	
+	((SELECT movie_id AS movie FROM language_in WHERE type = 'spoken' AND language_ID = 2)
+	UNION
+	(SELECT movie_id FROM genre_of WHERE genre_ID = 6)
+	UNION
+	(SELECT movie_id FROM stars_in WHERE actor_id = '10')
+	) AS mov
+
+ORDER BY child.id, mov.movie)
+
+/* Can be changed to contain any filter constraints dynamically through frontend */
