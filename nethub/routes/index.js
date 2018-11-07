@@ -4,7 +4,7 @@ const { Pool } = require('pg');
 var router = express.Router();
 
 const pool = new Pool({
-  user: 'postgres',
+  user: 'josefinengner',
   host: 'localhost',
   database: 'postgres',
   password: 'password',
@@ -176,6 +176,10 @@ router.post("/searched", function(req, res) {
     query+= "AND id NOT IN (SELECT movie_id FROM watched WHERE user_id = \
       (SELECT id FROM users WHERE name = '"+req.body.user+"')) "
   }
+
+  query += "AND id NOT IN \
+  (SELECT movie FROM cannot_watch \
+  WHERE child = (SELECT id FROM users WHERE name = '"+req.body.user+"'))"
 
   query += "GROUP BY movies.name";
   poolquery(query,res)

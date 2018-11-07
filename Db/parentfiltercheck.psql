@@ -12,6 +12,8 @@ FROM 	(SELECT child AS id FROM child_of
 	(SELECT movie_id FROM stars_in WHERE actor_id = '10')
 	) AS mov
 
-ORDER BY child.id, mov.movie)
+ORDER BY child.id, mov.movie);
+
+SELECT * FROM cannot_watch;
 
 /* Can be changed to contain any filter constraints dynamically through frontend */
